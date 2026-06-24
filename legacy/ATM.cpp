@@ -1,9 +1,14 @@
+// ============================================================================
+//  ORIGINAL 1st-SEMESTER VERSION -- preserved as-is for nostalgia.
+//  The modern, modular rewrite lives in ../src/. Do not "fix" this file;
+//  it's a snapshot of where the project began. See ../README.md.
+// ============================================================================
 #include<iostream>
 #include<cstdlib>
 #include<string.h>
 int balance=0;        // GLOBAL VARIABLE
 using namespace std;
-int show_menu()
+void show_menu()
 {
 	cout<<"\n\t\t\t\t*****************************************************\n";
 	cout<<"\t\t\t\t*            * WELCOME TO MENU *                    *\n";
@@ -18,7 +23,7 @@ int show_menu()
 	cout<<"\t\t\t\t*                                                   *\n";
 	cout<<"\t\t\t\t*****************************************************\n";
 }
-int PAY_BILL()
+void PAY_BILL()
 {
 	int BC=0,P=0,EB=0,WB=0,GB=0;
 	cout<<"\n\t\t\t\t*****************************************************\n";
@@ -81,14 +86,14 @@ if(balance==0)
 	cout<<"\n\n\t\t\t\"YOU CANNOT PAY BILL  \"\n\t\t\t\" YOUR BALANCE IS 0 \"\n";
 }
 }
-int DEP_AM()
+void DEP_AM()
 {
 	cout<<"\n\n\n\t\t\t\tDEPOSIT AMMOUNT : \n\t\t\t\t";	
 	double DepAmount; 
 	cin>>DepAmount; 
 	balance+=DepAmount;
 }
-int WIT_AM()
+void WIT_AM()
 {
 	cout<<"\n\n\n\t\t\t\tWITHDRAWL MONEY : \n\t\t\t\t"; 
 	double WidAmount; 

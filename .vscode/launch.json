@@ -2,16 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++ Runner: Debug Session",
+      "name": "Run ATM (modern)",
       "type": "cppdbg",
       "request": "launch",
+      "program": "${workspaceFolder}/atm.exe",
       "args": [],
       "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
       "externalConsole": true,
-      "cwd": "d:/NUML-5A/c++",
-      "program": "d:/NUML-5A/c++/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
+      "miDebuggerPath": "C:/Program Files/gcc/mingw64/bin/gdb.exe",
+      "preLaunchTask": "build-atm",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",

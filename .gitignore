@@ -1,0 +1,13 @@
+# Build output
+/build/
+*.exe
+*.o
+*.obj
+
+# IDE
+.vs/
+.vscode/
+/.vscode/
+
+# Local runtime database
+*.db

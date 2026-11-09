@@ -6,12 +6,24 @@
 
 #if defined(_WIN32)
 #include <conio.h>
+#include <io.h>
+#include <cstdio>
 #else
 #include <termios.h>
 #include <unistd.h>
 #endif
 
 namespace atm::console {
+
+namespace {
+bool stdinIsTerminal() {
+#if defined(_WIN32)
+    return _isatty(_fileno(stdin)) != 0;
+#else
+    return isatty(STDIN_FILENO) != 0;
+#endif
+}
+}  // namespace
 
 void clear() {
     // ANSI escape: move cursor home and clear screen. Works on modern Windows
@@ -73,6 +85,14 @@ std::string readLine(const std::string& prompt) {
 std::string readSecret(const std::string& prompt) {
     std::cout << prompt;
     std::string secret;
+
+    // When input is piped or redirected (scripts, tests, CI), there's no keyboard to
+    // mask, so read a normal line. _getch() would ignore the pipe and wait forever.
+    if (!stdinIsTerminal()) {
+        std::getline(std::cin, secret);
+        std::cout << '\n';
+        return secret;
+    }
 
 #if defined(_WIN32)
     int ch;

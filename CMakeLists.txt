@@ -19,3 +19,11 @@ if(MSVC)
 else()
     target_compile_options(atm PRIVATE -Wall -Wextra -Wpedantic)
 endif()
+
+# End-to-end test: runs the program with scripted input. Use: ctest --test-dir build
+enable_testing()
+add_test(NAME smoke
+    COMMAND ${CMAKE_COMMAND}
+        -DATM=$<TARGET_FILE:atm>
+        -DWORK=${CMAKE_CURRENT_BINARY_DIR}/smoke-work
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/tests/smoke_test.cmake)

@@ -9,6 +9,8 @@
   <img alt="Build" src="https://img.shields.io/badge/build-CMake-064F8C?logo=cmake&logoColor=white">
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-555">
   <img alt="Status" src="https://img.shields.io/badge/status-nostalgic%20%26%20maintained-success">
+  <a href="https://github.com/Umair-Habibx123/atm-machine-cpp/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Umair-Habibx123/atm-machine-cpp/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>
 
 ---
@@ -80,10 +82,6 @@ compiler's `bin` folder is on your `PATH`, then **open a new terminal** and chec
 g++ --version
 ```
 
-> 💡 Already had MinGW at `C:\MinGW`? That path was referenced by the old
-> `.vscode` config but no longer exists on this machine — installing fresh is
-> the easiest fix.
-
 **macOS** — `xcode-select --install` (gives you `clang++`).
 **Linux** — `sudo apt install g++` (Debian/Ubuntu) or your distro's equivalent.
 
@@ -109,6 +107,15 @@ cmake --build build
 ./build/atm                # macOS / Linux
 ./build/Debug/atm.exe      # Windows (MSVC)
 ./build/atm.exe            # Windows (MinGW)
+```
+
+**Run the tests** (CMake only). An end-to-end test plays three scripted sessions
+against a fresh database: create an account, deposit, withdraw, overdraw, send
+money, check the recipient's statement, pay a bill twice, and trigger the lockout.
+CI runs it on Windows, macOS and Linux.
+
+```powershell
+ctest --test-dir build -C Debug --output-on-failure
 ```
 
 ---
@@ -143,6 +150,8 @@ g++ legacy/ATM.cpp -o atm_legacy
 │   ├── Clock.hpp          # Cross-platform date/time helpers
 │   ├── Hash.hpp           # Deterministic PIN hashing (FNV-1a)
 │   └── Console.{hpp,cpp}  # Validated, cross-platform terminal I/O
+├── tests/
+│   └── smoke_test.cmake   # End-to-end test: scripted sessions, checked output
 ├── legacy/
 │   └── ATM.cpp         # The original 1st-semester version, untouched
 ├── CMakeLists.txt
@@ -161,7 +170,7 @@ g++ legacy/ATM.cpp -o atm_legacy
 | `system("cls")` (Windows-only, spawns a shell) | ANSI screen clear, cross-platform |
 | PIN typed in plain sight | Masked, non-echoing PIN entry |
 | `cin >> x` with no validation | Re-prompts on bad input, never gets stuck |
-| `rand()` never seeded (same "random" every run) | Properly seeded `std::mt19937` |
+| `rand()` never seeded (same "random" bill every run) | Each bill amount is derived from the month, so it stays fixed until paid and changes next month |
 | Non-`void` functions returning nothing (UB) | Correct return types throughout |
 | Could log in but lockout logic was tangled | Clean 3-attempt lockout |
 
@@ -177,8 +186,15 @@ works under the hood, not **what** it does.
 - [x] Transaction history / mini-statement
 - [x] Real monthly bills, one payment per month
 - [ ] Hash PINs with a real salted KDF (bcrypt/argon2) instead of FNV-1a
-- [ ] Unit-test suite wired into CMake (`ctest`)
+- [x] End-to-end test wired into CMake (`ctest`), run in CI on 3 operating systems
+- [ ] Unit tests for `Money`, `Account` and `Bank`
 - [ ] Export statement to CSV
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) © 2023 [Umair Habib](https://github.com/Umair-Habibx123)
 
 ---
 
